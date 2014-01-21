@@ -742,8 +742,6 @@ window.Chart = function(context){
 		//In case we have a canvas that is not a square. Minus 5 pixels as padding round the edge.
 		var doughnutRadius = Min([height/2,width/2]) - 5;
 		
-		var cutoutRadius = doughnutRadius * (config.percentageInnerCutout/100);
-		
 		for (var i=0; i<data.length; i++){
 			segmentTotal += data[i].value;
 		}
@@ -766,6 +764,10 @@ window.Chart = function(context){
 			}
 			for (var i=0; i<data.length; i++){
 				var segmentAngle = rotateAnimation * ((data[i].value/segmentTotal) * (Math.PI*2));
+				var segmentInnerCutout = data[i].percentageInnerCutout ? data[i].percentageInnerCutout : config.percentageInnerCutout;
+
+				var cutoutRadius = doughnutRadius * (segmentInnerCutout/100);
+
 				ctx.beginPath();
 				ctx.arc(width/2,height/2,scaleAnimation * doughnutRadius,cumulativeAngle,cumulativeAngle + segmentAngle,false);
 				ctx.arc(width/2,height/2,scaleAnimation * cutoutRadius,cumulativeAngle + segmentAngle,cumulativeAngle,true);
